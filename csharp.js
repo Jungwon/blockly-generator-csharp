@@ -7,6 +7,35 @@ Blockly.CSharp.addReservedWords(
     'abstract,as,base,bool,break,byte,case,catch,char,checked,class,const,continue,decimal,default,delegate,do,double,else,enum,event,explicit,extern,false,finally,fixed,float,for,foreach,goto,if,implicit,in,int,interface,internal,is,lock,long,namespace,new,null,object,operator,out,override,params,private,protected,public,readonly,ref,return,sbyte,sealed,short,sizeof,stackalloc,static,string,struct,switch,this,throw,true,try,typeof,uint,ulong,unchecked,unsafe,ushort,using,virtual,void,volatile,while'
     );
 
+Blockly.CSharp.ORDER_ATOMIC = 0;         // 0 ""
+Blockly.CSharp.ORDER_MEMBER = 1;         // . []
+Blockly.CSharp.ORDER_NEW = 1;            // new
+Blockly.CSharp.ORDER_TYPEOF = 1;         // typeof
+Blockly.CSharp.ORDER_FUNCTION_CALL = 1;  // ()
+Blockly.CSharp.ORDER_INCREMENT = 1;      // ++
+Blockly.CSharp.ORDER_DECREMENT = 1;      // --
+Blockly.CSharp.ORDER_LOGICAL_NOT = 2;    // !
+Blockly.CSharp.ORDER_BITWISE_NOT = 2;    // ~
+Blockly.CSharp.ORDER_UNARY_PLUS = 2;     // +
+Blockly.CSharp.ORDER_UNARY_NEGATION = 2; // -
+Blockly.CSharp.ORDER_MULTIPLICATION = 3; // *
+Blockly.CSharp.ORDER_DIVISION = 3;       // /
+Blockly.CSharp.ORDER_MODULUS = 3;        // %
+Blockly.CSharp.ORDER_ADDITION = 4;       // +
+Blockly.CSharp.ORDER_SUBTRACTION = 4;    // -
+Blockly.CSharp.ORDER_BITWISE_SHIFT = 5;  // << >>
+Blockly.CSharp.ORDER_RELATIONAL = 6;     // < <= > >=
+Blockly.CSharp.ORDER_EQUALITY = 7;       // == !=
+Blockly.CSharp.ORDER_BITWISE_AND = 8;   // &
+Blockly.CSharp.ORDER_BITWISE_XOR = 9;   // ^
+Blockly.CSharp.ORDER_BITWISE_OR = 10;    // |
+Blockly.CSharp.ORDER_LOGICAL_AND = 11;   // &&
+Blockly.CSharp.ORDER_LOGICAL_OR = 12;    // ||
+Blockly.CSharp.ORDER_CONDITIONAL = 13;   // ?:
+Blockly.CSharp.ORDER_ASSIGNMENT = 14;    // = += -= *= /= %= <<= >>= ...
+Blockly.CSharp.ORDER_COMMA = 15;         // ,
+Blockly.CSharp.ORDER_NONE = 99;          // (...)
+
 Blockly.CSharp.init = function() {
   Blockly.CSharp.definitions_ = {};
 
@@ -36,6 +65,16 @@ Blockly.CSharp.finish = function(code) {
     definitions.push(Blockly.CSharp.definitions_[name]);
   }
   return definitions.join('\n\n') + '\n\n\n' + code;
+};
+
+/**
+ * Naked values are top-level blocks with outputs that aren't plugged into
+ * anything.  A trailing semicolon is needed to make this legal.
+ * @param {string} line Line of generated code.
+ * @return {string} Legal line of code.
+ */
+Blockly.CSharp.scrubNakedValue = function(line) {
+  return line + ';\n';
 };
 
 Blockly.CSharp.quote_ = function(val) {
