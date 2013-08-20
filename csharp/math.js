@@ -127,7 +127,7 @@ Blockly.CSharp.math_constant = function() {
 Blockly.CSharp.math_constant.CONSTANTS = {
   PI: ['Math.PI', Blockly.CSharp.ORDER_MEMBER],
   E: ['Math.E', Blockly.CSharp.ORDER_MEMBER],
-  GOLDEN_RATIO: ['(1 + Math.sqrt(5)) / 2', Blockly.CSharp.ORDER_DIVISION],
+  GOLDEN_RATIO: ['(1 + Math.Sqrt(5)) / 2', Blockly.CSharp.ORDER_DIVISION],
   SQRT2: ['Math.Sqrt(2)', Blockly.CSharp.ORDER_MEMBER],
   SQRT1_2: ['Math.Sqrt(1.0 / 2)', Blockly.CSharp.ORDER_MEMBER],
   INFINITY: ['double.PositiveInfinity', Blockly.CSharp.ORDER_ATOMIC]
