@@ -205,3 +205,184 @@ Blockly.CSharp.math_round = Blockly.CSharp.math_single;
 // Trigonometry functions have a single operand.
 Blockly.CSharp.math_trig = Blockly.CSharp.math_single;
 
+Blockly.CSharp.math_on_list = function() {
+  // Math functions for lists.
+  var func = this.getTitleValue('OP');
+  var list, code;
+  switch (func) {
+    case 'SUM':
+      list = Blockly.CSharp.valueToCode(this, 'LIST',
+          Blockly.CSharp.ORDER_MEMBER) || 'new List<dynamic>()';
+      code = list + '.Aggregate((x, y) => x + y)';
+      break;
+    case 'MIN':
+      list = Blockly.CSharp.valueToCode(this, 'LIST',
+          Blockly.CSharp.ORDER_COMMA) || 'new List<dynamic>()';
+      code = list + '.Min()';
+      break;
+    case 'MAX':
+      list = Blockly.CSharp.valueToCode(this, 'LIST',
+          Blockly.CSharp.ORDER_COMMA) || 'new List<dynamic>()';
+      code = list + '.Max()';
+      break;
+    case 'AVERAGE':
+      list = Blockly.CSharp.valueToCode(this, 'LIST',
+          Blockly.CSharp.ORDER_COMMA) || 'new List<dynamic>()';
+      code = list + '.Average()';
+      break;
+    case 'MEDIAN':
+      // math_median([null,null,1,3]) == 2.0.
+      if (!Blockly.CSharp.definitions_['math_median']) {
+        var functionName = Blockly.CSharp.variableDB_.getDistinctName(
+            'math_median', Blockly.Generator.NAME_TYPE);
+        Blockly.CSharp.math_on_list.math_median = functionName;
+        var func = [];
+        func.push('public static double ' + functionName + '(List<dynamic> vals) {');
+        func.push('  vals.Sort();');
+        func.push('  if (vals.Count % 2 == 0)');
+        func.push('    return (vals[vals.Count / 2 - 1] + vals[vals.Count / 2]) / 2;');
+        func.push('  else');
+        func.push('    return vals[(vals.Count - 1) / 2];');
+        func.push('}');
+        Blockly.CSharp.definitions_['math_median'] = func.join('\n');
+      }
+      list = Blockly.CSharp.valueToCode(this, 'LIST',
+          Blockly.CSharp.ORDER_NONE) || 'new List<dynamic>()';
+      code = Blockly.CSharp.math_on_list.math_median + '(' + list + ')';
+      break;
+    case 'MODE':
+      if (!Blockly.CSharp.definitions_['math_modes']) {
+        var functionName = Blockly.CSharp.variableDB_.getDistinctName(
+            'math_modes', Blockly.Generator.NAME_TYPE);
+        Blockly.CSharp.math_on_list.math_modes = functionName;
+        // As a list of numbers can contain more than one mode,
+        // the returned result is provided as an array.
+        // Mode of [3, 'x', 'x', 1, 1, 2, '3'] -> ['x', 1].
+        var func = [];
+        func.push('public static List<dynamic> ' + functionName + '(List<dynamic> values) {');
+        func.push('  var modes = new List<dynamic>();');
+        func.push('  var counts = new Dictionary<double, int>();');
+        func.push('  var maxCount = 0;');
+        func.push('  foreach (var value in values) {');
+        func.push('    int storedCount;');
+        func.push('    if (counts.TryGetValue(value, out storedCount)) {');
+        func.push('      maxCount = Math.Max(maxCount, ++counts[value]);');
+        func.push('    }');
+        func.push('    else {');
+        func.push('      counts.Add(value, 1);');
+        func.push('      maxCount = 1;');
+        func.push('    }');
+        func.push('  }');
+        func.push('  foreach (var pair in counts) {');
+        func.push('    if (pair.Value == maxCount)');
+        func.push('      modes.Add(pair.Key);');
+        func.push('  }');
+        func.push('  return modes;');
+        func.push('}');
+        Blockly.CSharp.definitions_['math_modes'] = func.join('\n');
+      }
+      list = Blockly.CSharp.valueToCode(this, 'LIST',
+          Blockly.CSharp.ORDER_NONE) || 'new List<dynamic>()';
+      code = Blockly.CSharp.math_on_list.math_modes + '(' + list + ')';
+      break;
+    case 'STD_DEV':
+      if (!Blockly.CSharp.definitions_['math_standard_deviation']) {
+        var functionName = Blockly.CSharp.variableDB_.getDistinctName(
+            'math_standard_deviation', Blockly.Generator.NAME_TYPE);
+        Blockly.CSharp.math_on_list.math_standard_deviation = functionName;
+        var func = [];
+        func.push('public static double ' + functionName + '(List<dynamic> numbers) {');
+        func.push('  var n = numbers.Count;');
+        func.push('  var mean = numbers.Average(val => val);');
+        func.push('  var variance = 0.0;');
+        func.push('  for (var j = 0; j < n; j++) {');
+        func.push('    variance += Math.Pow(numbers[j] - mean, 2);');
+        func.push('  }');
+        func.push('  variance = variance / n;');
+        func.push('  return Math.Sqrt(variance);');
+        func.push('}');
+        Blockly.CSharp.definitions_['math_standard_deviation'] =
+            func.join('\n');
+      }
+      list = Blockly.CSharp.valueToCode(this, 'LIST',
+          Blockly.CSharp.ORDER_NONE) || 'new List<dynamic>()';
+      code = Blockly.CSharp.math_on_list.math_standard_deviation +
+          '(' + list + ')';
+      break;
+    case 'RANDOM':
+      if (!Blockly.CSharp.definitions_['math_random_item']) {
+        var functionName = Blockly.CSharp.variableDB_.getDistinctName(
+            'math_random_item', Blockly.Generator.NAME_TYPE);
+        Blockly.CSharp.math_on_list.math_random_item = functionName;
+        var func = [];
+        func.push('public static dynamic ' + functionName + '(List<dynamic> list) {');
+        func.push('  var x = (new Random()).Next(list.length - 1);');
+        func.push('  return list[x];');
+        func.push('}');
+        Blockly.CSharp.definitions_['math_random_item'] = func.join('\n');
+      }
+      list = Blockly.CSharp.valueToCode(this, 'LIST',
+          Blockly.CSharp.ORDER_NONE) || 'new List<dynamic>()';
+      code = Blockly.CSharp.math_on_list.math_random_item +
+          '(' + list + ')';
+      break;
+    default:
+      throw 'Unknown operator: ' + func;
+  }
+  return [code, Blockly.CSharp.ORDER_FUNCTION_CALL];
+};
+
+Blockly.CSharp.math_modulo = function() {
+  // Remainder computation.
+  var argument0 = Blockly.CSharp.valueToCode(this, 'DIVIDEND',
+      Blockly.CSharp.ORDER_MODULUS) || '0.0';
+  var argument1 = Blockly.CSharp.valueToCode(this, 'DIVISOR',
+      Blockly.CSharp.ORDER_MODULUS) || '0.0';
+  var code = argument0 + ' % ' + argument1;
+  return [code, Blockly.CSharp.ORDER_MODULUS];
+};
+
+Blockly.CSharp.math_constrain = function() {
+  // Constrain a number between two limits.
+  var argument0 = Blockly.CSharp.valueToCode(this, 'VALUE',
+      Blockly.CSharp.ORDER_COMMA) || '0.0';
+  var argument1 = Blockly.CSharp.valueToCode(this, 'LOW',
+      Blockly.CSharp.ORDER_COMMA) || '0.0';
+  var argument2 = Blockly.CSharp.valueToCode(this, 'HIGH',
+      Blockly.CSharp.ORDER_COMMA) || 'double.PositiveInfinity';
+  var code = 'Math.Min(Math.Max(' + argument0 + ', ' + argument1 + '), ' +
+      argument2 + ')';
+  return [code, Blockly.CSharp.ORDER_FUNCTION_CALL];
+};
+
+Blockly.CSharp.math_random_int = function() {
+  // Random integer between [X] and [Y].
+  var argument0 = Blockly.CSharp.valueToCode(this, 'FROM',
+      Blockly.CSharp.ORDER_COMMA) || '0.0';
+  var argument1 = Blockly.CSharp.valueToCode(this, 'TO',
+      Blockly.CSharp.ORDER_COMMA) || '0.0';
+  if (!Blockly.CSharp.definitions_['math_random_int']) {
+    var functionName = Blockly.CSharp.variableDB_.getDistinctName(
+        'math_random_int', Blockly.Generator.NAME_TYPE);
+    Blockly.CSharp.math_random_int.random_function = functionName;
+    var func = [];
+    func.push('public static int ' + functionName + '(int a, int b) {');
+    func.push('  if (a > b) {');
+    func.push('    // Swap a and b to ensure a is smaller.');
+    func.push('    var c = a;');
+    func.push('    a = b;');
+    func.push('    b = c;');
+    func.push('  }');
+    func.push('  return Math.Floor(a + (new Random()).Next(b - a));');
+    func.push('}');
+    Blockly.CSharp.definitions_['math_random_int'] = func.join('\n');
+  }
+  var code = Blockly.CSharp.math_random_int.random_function +
+      '(' + argument0 + ', ' + argument1 + ')';
+  return [code, Blockly.CSharp.ORDER_FUNCTION_CALL];
+};
+
+Blockly.CSharp.math_random_float = function() {
+  // Random fraction between 0 and 1.
+  return ['(new Random()).NextDouble()', Blockly.CSharp.ORDER_FUNCTION_CALL];
+};
