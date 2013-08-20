@@ -197,8 +197,7 @@ Blockly.CSharp.math_change = function() {
       Blockly.CSharp.ORDER_ADDITION) || '0.0';
   var varName = Blockly.CSharp.variableDB_.getName(
       this.getTitleValue('VAR'), Blockly.Variables.NAME_TYPE);
-  return varName + ' = (typeof ' + varName + ' == \'number\' ? ' + varName +
-      ' : 0) + ' + argument0 + ';\n'; // TODO
+  return varName + ' = (' + varName + '.GetType().Name == "Double" ? ' + varName + ' : 0.0) + ' + argument0 + ';\n';
 };
 
 // Rounding functions have a single operand.
