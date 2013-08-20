@@ -147,7 +147,7 @@ Blockly.CSharp.math_number_property = function() {
           'isPrime', Blockly.Generator.NAME_TYPE);
       Blockly.CSharp.logic_prime= functionName;
       var func = [];
-      func.push('bool ' + functionName + '(double n) {');
+      func.push('public static bool ' + functionName + '(double n) {');
       func.push('  // http://en.wikipedia.org/wiki/Primality_test#Naive_methods');
       func.push('  if (n == 2.0 || n == 3.0)');
       func.push('    return true;');
