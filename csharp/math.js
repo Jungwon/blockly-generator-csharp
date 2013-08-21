@@ -147,7 +147,7 @@ Blockly.CSharp.math_number_property = function() {
           'isPrime', Blockly.Generator.NAME_TYPE);
       Blockly.CSharp.logic_prime= functionName;
       var func = [];
-      func.push('public static bool ' + functionName + '(double n) {');
+      func.push('var ' + functionName + ' = new Func<double, bool>((n) => {');
       func.push('  // http://en.wikipedia.org/wiki/Primality_test#Naive_methods');
       func.push('  if (n == 2.0 || n == 3.0)');
       func.push('    return true;');
@@ -160,7 +160,7 @@ Blockly.CSharp.math_number_property = function() {
       func.push('      return false;');
       func.push('  }');
       func.push('  return true;');
-      func.push('}');
+      func.push('});');
       Blockly.CSharp.definitions_['isPrime'] = func.join('\n');
     }
     code = Blockly.CSharp.logic_prime + '(' + number_to_check + ')';
@@ -237,13 +237,13 @@ Blockly.CSharp.math_on_list = function() {
             'math_median', Blockly.Generator.NAME_TYPE);
         Blockly.CSharp.math_on_list.math_median = functionName;
         var func = [];
-        func.push('public static double ' + functionName + '(List<dynamic> vals) {');
+        func.push('var ' + functionName + ' = new Func<List<dynamic>,dynamic>((vals) => {');
         func.push('  vals.Sort();');
         func.push('  if (vals.Count % 2 == 0)');
         func.push('    return (vals[vals.Count / 2 - 1] + vals[vals.Count / 2]) / 2;');
         func.push('  else');
         func.push('    return vals[(vals.Count - 1) / 2];');
-        func.push('}');
+        func.push('});');
         Blockly.CSharp.definitions_['math_median'] = func.join('\n');
       }
       list = Blockly.CSharp.valueToCode(this, 'LIST',
@@ -259,7 +259,7 @@ Blockly.CSharp.math_on_list = function() {
         // the returned result is provided as an array.
         // Mode of [3, 'x', 'x', 1, 1, 2, '3'] -> ['x', 1].
         var func = [];
-        func.push('public static List<dynamic> ' + functionName + '(List<dynamic> values) {');
+        func.push('var ' + functionName + ' = new Func<List<dynamic>,List<dynamic>>((values) => {');
         func.push('  var modes = new List<dynamic>();');
         func.push('  var counts = new Dictionary<double, int>();');
         func.push('  var maxCount = 0;');
@@ -278,7 +278,7 @@ Blockly.CSharp.math_on_list = function() {
         func.push('      modes.Add(pair.Key);');
         func.push('  }');
         func.push('  return modes;');
-        func.push('}');
+        func.push('});');
         Blockly.CSharp.definitions_['math_modes'] = func.join('\n');
       }
       list = Blockly.CSharp.valueToCode(this, 'LIST',
@@ -291,7 +291,7 @@ Blockly.CSharp.math_on_list = function() {
             'math_standard_deviation', Blockly.Generator.NAME_TYPE);
         Blockly.CSharp.math_on_list.math_standard_deviation = functionName;
         var func = [];
-        func.push('public static double ' + functionName + '(List<dynamic> numbers) {');
+        func.push('var ' + functionName + ' = new Func<List<dynamic>,double>((numbers) => {');
         func.push('  var n = numbers.Count;');
         func.push('  var mean = numbers.Average(val => val);');
         func.push('  var variance = 0.0;');
@@ -300,7 +300,7 @@ Blockly.CSharp.math_on_list = function() {
         func.push('  }');
         func.push('  variance = variance / n;');
         func.push('  return Math.Sqrt(variance);');
-        func.push('}');
+        func.push('});');
         Blockly.CSharp.definitions_['math_standard_deviation'] =
             func.join('\n');
       }
@@ -315,10 +315,10 @@ Blockly.CSharp.math_on_list = function() {
             'math_random_item', Blockly.Generator.NAME_TYPE);
         Blockly.CSharp.math_on_list.math_random_item = functionName;
         var func = [];
-        func.push('public static dynamic ' + functionName + '(List<dynamic> list) {');
+        func.push('var ' + functionName + ' = new Func<List<dynamic>,dynamic>((list) => {');
         func.push('  var x = (new Random()).Next(list.length - 1);');
         func.push('  return list[x];');
-        func.push('}');
+        func.push('});');
         Blockly.CSharp.definitions_['math_random_item'] = func.join('\n');
       }
       list = Blockly.CSharp.valueToCode(this, 'LIST',
@@ -366,15 +366,15 @@ Blockly.CSharp.math_random_int = function() {
         'math_random_int', Blockly.Generator.NAME_TYPE);
     Blockly.CSharp.math_random_int.random_function = functionName;
     var func = [];
-    func.push('public static int ' + functionName + '(int a, int b) {');
+    func.push('var ' + functionName + ' new Func<int,int,int>((a, b) => {');
     func.push('  if (a > b) {');
     func.push('    // Swap a and b to ensure a is smaller.');
     func.push('    var c = a;');
     func.push('    a = b;');
     func.push('    b = c;');
     func.push('  }');
-    func.push('  return Math.Floor(a + (new Random()).Next(b - a));');
-    func.push('}');
+    func.push('  return (int)Math.Floor(a + (new Random()).Next(b - a));');
+    func.push('});');
     Blockly.CSharp.definitions_['math_random_int'] = func.join('\n');
   }
   var code = Blockly.CSharp.math_random_int.random_function +
