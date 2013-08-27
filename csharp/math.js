@@ -316,7 +316,7 @@ Blockly.CSharp.math_on_list = function() {
         Blockly.CSharp.math_on_list.math_random_item = functionName;
         var func = [];
         func.push('var ' + functionName + ' = new Func<List<dynamic>,dynamic>((list) => {');
-        func.push('  var x = (new Random()).Next(list.length - 1);');
+        func.push('  var x = (new Random()).Next(list.Count);');
         func.push('  return list[x];');
         func.push('});');
         Blockly.CSharp.definitions_['math_random_item'] = func.join('\n');
