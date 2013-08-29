@@ -144,10 +144,7 @@ Blockly.CSharp.controls_forEach = function() {
   var indexVar = Blockly.CSharp.variableDB_.getDistinctName(
       variable0 + '_index', Blockly.Variables.NAME_TYPE);
   if (argument0.match(/^\w+$/)) {
-    branch = '  ' + variable0 + ' = ' + argument0 + '[' + indexVar + '];\n' +
-        branch;
-    code = 'for (var ' + indexVar + ' in  ' + argument0 + ') {\n' +
-        branch + '}\n';
+    code = 'foreach (var ' + variable0 + ' in  ' + argument0 + ') {\n' + branch + '}\n';
   } else {
     // The list appears to be more complicated than a simple variable.
     // Cache it to a variable to prevent repeated look-ups.
