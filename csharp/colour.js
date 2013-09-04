@@ -4,7 +4,7 @@ Blockly.CSharp.colour = {};
 
 Blockly.CSharp.colour_picker = function() {
   // Colour picker.
-  var code = '\'' + this.getTitleValue('COLOUR') + '\'';
+    var code = 'ColorTranslator.FromHtml("' + this.getTitleValue('COLOUR') + '")';
   return [code, Blockly.CSharp.ORDER_ATOMIC];
 };
 
