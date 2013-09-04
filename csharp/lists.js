@@ -45,8 +45,7 @@ Blockly.CSharp.lists_repeat = function() {
 
 Blockly.CSharp.lists_length = function() {
   // List length.
-  var argument0 = Blockly.CSharp.valueToCode(this, 'VALUE',
-      Blockly.CSharp.ORDER_FUNCTION_CALL) || '\'\'';
+  var argument0 = Blockly.CSharp.valueToCode(this, 'VALUE', Blockly.CSharp.ORDER_FUNCTION_CALL) || 'null';
   return [argument0 + '.Count', Blockly.CSharp.ORDER_MEMBER];
 };
 
