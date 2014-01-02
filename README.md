@@ -5,7 +5,7 @@ Generate C# code from Blockly blocks.  See [the Blockly Wiki](http://code.google
 
 Usage
 -----
-1. Include csharp.js and any scripts from the csharp folder required for the built-in blocks you support.
+1. Include *csharp.js* and scripts from the *csharp* folder as required for the built-in blocks supported by your configuration.
 2. [Write and include code generation scripts](http://code.google.com/p/blockly/wiki/GeneratingCode) for your custom blocks.
 3. Generate C# code with the following JavaScript
 ```
