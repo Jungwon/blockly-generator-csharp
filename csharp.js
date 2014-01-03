@@ -1,6 +1,10 @@
 'use strict';
 
-Blockly.CSharp = Blockly.Generator.get('CSharp');
+goog.provide('Blockly.CSharp');
+
+goog.require('Blockly.Generator');
+
+Blockly.CSharp = new Blockly.Generator('CSharp');
 
 Blockly.CSharp.addReservedWords(
     //http://msdn.microsoft.com/en-us/library/x53a06bb.aspx
@@ -42,7 +46,7 @@ Blockly.CSharp.ORDER_NONE = 99;          // (...)
  * E.g. '  checkTimeout(%1);\n'
  * @type ?string
  */
-Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+Blockly.CSharp.INFINITE_LOOP_TRAP = null;
 
 Blockly.CSharp.init = function() {
   Blockly.CSharp.definitions_ = {};
@@ -110,7 +114,7 @@ Blockly.CSharp.scrub_ = function(block, code) {
     // Collect comment for this block.
     var comment = block.getCommentText();
     if (comment) {
-      commentCode += Blockly.Generator.prefixLines(comment, '// ') + '\n';
+      commentCode += this.prefixLines(comment, '// ') + '\n';
     }
     // Collect comments for all value arguments.
     // Don't collect comments for nested statements.
@@ -118,9 +122,9 @@ Blockly.CSharp.scrub_ = function(block, code) {
       if (block.inputList[x].type == Blockly.INPUT_VALUE) {
         var childBlock = block.inputList[x].connection.targetBlock();
         if (childBlock) {
-          var comment = Blockly.Generator.allNestedComments(childBlock);
+          var comment = this.allNestedComments(childBlock);
           if (comment) {
-            commentCode += Blockly.Generator.prefixLines(comment, '// ');
+            commentCode += this.prefixLines(comment, '// ');
           }
         }
       }
